@@ -1,0 +1,8 @@
+dataset
+__pycache__/
+__MACOSX
+myenv
+venv
+.ipynb_checkpoints/
+.DS_Store
+assignment2_2023

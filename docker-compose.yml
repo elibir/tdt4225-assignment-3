@@ -1,0 +1,11 @@
+services:
+  mongodb:
+    ports:
+      - "27017:27017"
+    container_name: mongodb
+    image: mongo:7.0.14
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123
+      - MONGO_INITDB_DATABASE=geolife
