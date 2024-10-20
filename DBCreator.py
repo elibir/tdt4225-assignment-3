@@ -62,7 +62,7 @@ class ExampleProgram:
         with open(self.base_path + "labeled_ids.txt", 'r') as f:
             labeled_ids = {line.strip() for line in f}
             
-        for user_id in user_ids[:20]:
+        for user_id in user_ids:
             collection = self.db["user"]
             has_labels = user_id in labeled_ids
             collection.insert_one({
@@ -160,9 +160,9 @@ def main():
         program.fetch_documents(collection_name="user", limit=20)
         program.fetch_documents(collection_name="activity", limit=1)
         program.fetch_documents(collection_name="trackpoint", limit=10)
-        program.drop_coll("user")
-        program.drop_coll("activity")
-        program.drop_coll("trackpoint")
+        # program.drop_coll("user")
+        # program.drop_coll("activity")
+        # program.drop_coll("trackpoint")
         # Check that the table is dropped
         program.show_coll()
     except Exception as e:
