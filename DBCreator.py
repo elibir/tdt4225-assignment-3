@@ -130,10 +130,10 @@ class ExampleProgram:
     def prepare_trackpoints(self, trackpoints):
         formatted_trackpoints = []
         for trackpoint in trackpoints:
-            latitude = trackpoint[0]
-            longitude = trackpoint[1]
-            altitude = trackpoint[3]
-            date_days = trackpoint[4]
+            latitude = float(trackpoint[0])
+            longitude = float(trackpoint[1])
+            altitude = int(float(trackpoint[3])) # truncate to get same results as MySql
+            date_days = float(trackpoint[4])
             # Merge date and hour into a single datetime object
             date_time = parse(trackpoint[5] + " " + trackpoint[6])
             formatted_trackpoints.append(
