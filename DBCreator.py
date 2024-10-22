@@ -61,7 +61,8 @@ class ExampleProgram:
         user_ids = os.listdir(self.base_path + "Data")
         with open(self.base_path + "labeled_ids.txt", 'r') as f:
             labeled_ids = {line.strip() for line in f}
-            
+
+        activity_id = 1 # start the id at 1 and then increment    
         for user_id in user_ids:
             collection = self.db["user"]
             has_labels = user_id in labeled_ids
@@ -69,12 +70,13 @@ class ExampleProgram:
                 "_id": user_id,
                 "has_labels": has_labels
             })
-            self.filter_and_insert_activities(user_id, has_labels)
+            activity_id = self.filter_and_insert_activities(activity_id, user_id, has_labels)
             
         print("All data inserted successfully.")
         
-    def insert_activity(self, user_id, transportation_mode, start_time, end_time, trackpoint_ids):
+    def insert_activity(self, activity_id, user_id, transportation_mode, start_time, end_time, trackpoint_ids):
         self.db.activity.insert_one({
+            "_id": activity_id,
             "transportation_mode": transportation_mode,
             "start_time": start_time,
             "end_time": end_time,
@@ -82,7 +84,7 @@ class ExampleProgram:
             "trackpoints": trackpoint_ids
         })
         
-    def filter_and_insert_activities(self, user_id, has_labels):
+    def filter_and_insert_activities(self, activity_id, user_id, has_labels):
         activity_files = os.listdir(self.base_path + "Data/" + user_id + "/Trajectory")
         if len(activity_files) == 0: raise FileNotFoundError("No activity files found for user", user_id)
         
@@ -96,12 +98,14 @@ class ExampleProgram:
                 label_dict = self.read_labels(self.base_path + "Data/" + user_id + "/labels.txt")
                 transportation_mode = label_dict.get((start_time, end_time))
 
-            formatted_trackpoints = self.prepare_trackpoints(trackpoints)
+            formatted_trackpoints = self.prepare_trackpoints(activity_id, trackpoints)
             # Insert the trackpoints and retrieve the inserted IDs
             result = self.db.trackpoint.insert_many(formatted_trackpoints)
             trackpoint_ids = result.inserted_ids    
-            self.insert_activity(user_id, transportation_mode, start_time, end_time, trackpoint_ids)
-        print("Finished inserting activities for user: ", user_id)        
+            self.insert_activity(activity_id, user_id, transportation_mode, start_time, end_time, trackpoint_ids)
+            activity_id += 1
+        print("Finished inserting activities for user: ", user_id)
+        return activity_id       
     
     def read_plt(self, file_path):
         data = []
@@ -127,7 +131,7 @@ class ExampleProgram:
             label_dict[(start_time, end_time)] = transportation_mode
         return label_dict
     
-    def prepare_trackpoints(self, trackpoints):
+    def prepare_trackpoints(self, activity_id, trackpoints):
         formatted_trackpoints = []
         for trackpoint in trackpoints:
             latitude = float(trackpoint[0])
@@ -141,7 +145,8 @@ class ExampleProgram:
                  "lon": longitude,
                  "altitude": altitude,
                  "date_days": date_days,
-                 "date_time": date_time
+                 "date_time": date_time,
+                 "activity_id": activity_id
                 }
             )
         return formatted_trackpoints  
@@ -158,7 +163,7 @@ def main():
         program.create_coll("trackpoint")
         program.insert_data()
         program.fetch_documents(collection_name="user", limit=20)
-        program.fetch_documents(collection_name="activity", limit=1)
+        program.fetch_documents(collection_name="activity", limit=2)
         program.fetch_documents(collection_name="trackpoint", limit=10)
         # program.drop_coll("user")
         # program.drop_coll("activity")
