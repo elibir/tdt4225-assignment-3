@@ -50,7 +50,7 @@ down: ## Tear down Docker containers
 # Run init using main.py
 init_db: create-env ## Run the init script
 	@echo "Running init..."
-	$(PYTHON) example.py
+	$(PYTHON) DBCreator.py
 	@echo "Init completed."
 
 # Start all services

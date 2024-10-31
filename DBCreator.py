@@ -15,33 +15,6 @@ class ExampleProgram:
     def create_coll(self, collection_name):
         collection = self.db.create_collection(collection_name)    
         print('Created collection: ', collection)
-
-    def insert_documents(self, collection_name):
-        docs = [
-            {
-                "_id": 1,
-                "name": "Bobby",
-                "courses": 
-                    [
-                    {'code':'TDT4225', 'name': ' Very Large, Distributed Data Volumes'},
-                    {'code':'BOI1001', 'name': ' How to become a boi or boierinnaa'}
-                    ] 
-            },
-            {
-                "_id": 2,
-                "name": "Bobby",
-                "courses": 
-                    [
-                    {'code':'TDT02', 'name': ' Advanced, Distributed Systems'},
-                    ] 
-            },
-            {
-                "_id": 3,
-                "name": "Bobby",
-            }
-        ]  
-        collection = self.db[collection_name]
-        collection.insert_many(docs)
         
     def fetch_documents(self, collection_name, limit):
         collection = self.db[collection_name]
@@ -136,7 +109,7 @@ class ExampleProgram:
         for trackpoint in trackpoints:
             latitude = float(trackpoint[0])
             longitude = float(trackpoint[1])
-            altitude = int(float(trackpoint[3])) # truncate to get same results as MySql
+            altitude = int(float(trackpoint[3])) # truncate to get same results as MySql assignment
             date_days = float(trackpoint[4])
             # Merge date and hour into a single datetime object
             date_time = parse(trackpoint[5] + " " + trackpoint[6])
@@ -162,13 +135,9 @@ def main():
         program.create_coll("activity")
         program.create_coll("trackpoint")
         program.insert_data()
-        program.fetch_documents(collection_name="user", limit=20)
-        program.fetch_documents(collection_name="activity", limit=2)
+        program.fetch_documents(collection_name="user", limit=10)
+        program.fetch_documents(collection_name="activity", limit=1)
         program.fetch_documents(collection_name="trackpoint", limit=10)
-        # program.drop_coll("user")
-        # program.drop_coll("activity")
-        # program.drop_coll("trackpoint")
-        # Check that the table is dropped
         program.show_coll()
     except Exception as e:
         print("ERROR: Failed to use database:", e)

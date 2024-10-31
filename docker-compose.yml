@@ -14,4 +14,3 @@ services:
 
 volumes:
   local-volume:
-    external: true  # Indicates that the volume already exists

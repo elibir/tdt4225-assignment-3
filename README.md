@@ -1,16 +1,3 @@
- # TODO: rewrite this
- # TODO: remember in report to discuss how you structure your collection and documents
- 
- ## Useful links:
-
- [MySql python connector docs](https://dev.mysql.com/doc/connector-python/en/connector-python-examples.html)
-
- [Os walk method for iterating through directories](https://www.geeksforgeeks.org/os-walk-python/)
-
- [Take advantage of datetime data type in your queries](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html)
-
- [Using variables in MySQL](https://www.mysqltutorial.org/mysql-basics/mysql-variables/)
-
 ## Requirements
 
 ### Software
@@ -25,12 +12,12 @@
 ## Getting started
 ### Clone the Repository
 ```bash
-git clone https://github.com/elibir/tdt4225-assignment-2
+git clone https://github.com/elibir/tdt4225-assignment-3
 ```
 
 ### Navigate to Project Directory
 ```bash
-cd tdt4225-assignment-2
+cd tdt4225-assignment-3
 ```
 
 ### Run Setup and Start Services
@@ -55,27 +42,4 @@ To shut down the generated Docker container and remove the virtual environment a
 ```bash
 make down
 make remove-env
-```
-
-## Useful commands:
-
-### Access MySQL in a Running Docker Container
-```bash
-docker exec -it mysqldb mysql -u root -p
-``` 
-### Use a Database
-```bash
-USE testdb;
-```
-### Drop a Table
-```bash 
-DROP TABLE user;
-```
-### Drop a Database
-```bash 
-DROP DATABASE testdb;
-```
-### Exit MySQL
-```bash
-EXIT;
 ```
